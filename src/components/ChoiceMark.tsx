@@ -3,8 +3,6 @@ import useMarkStore from "../hooks/useMarkStore";
 export default function ChoiceMark() {
   const markSelected = useMarkStore((state) => state.markSelected);
   const setMarkSelected = useMarkStore((state) => state.setMarkSelected);
-  const setTurnNow = useMarkStore(state => state.setTurnNow)
-  setTurnNow("x")
   return (
     <div
       onClick={() =>

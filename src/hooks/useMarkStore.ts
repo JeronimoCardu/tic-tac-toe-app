@@ -6,9 +6,19 @@ type MarkProps = {
   turnNow: string;
   setTurnNow: (turn: string) => void;
   results: { value: boolean; mark: string }[];
-  setResult: (indexBox: number) => void;
-  viewModalWin: [boolean, string];
-  setViewModalWin: (show: boolean, winner: string) => void;
+  setResults: (indexBox: number) => void;
+  viewModalWin: {
+    view: boolean;
+    winner: string;
+    msg: string;
+    mode: string;
+  };
+  setViewModalWin: (modalWin: {
+    view: boolean;
+    winner: string;
+    msg: string;
+    mode: string;
+  }) => void;
   statesGame: {
     winsYou: number;
     winsP1: number;
@@ -28,29 +38,38 @@ const useMarkStore = create<MarkProps>((set) => ({
   turnNow: "x",
   setTurnNow: (turn: string) => set({ turnNow: turn }),
   results: [
-    { value: false, mark: "" },
-    { value: false, mark: "" },
-    { value: false, mark: "" },
-    { value: false, mark: "" },
-    { value: false, mark: "" },
-    { value: false, mark: "" },
-    { value: false, mark: "" },
-    { value: false, mark: "" },
-    { value: false, mark: "" },
+    { value: false, mark: "0" },
+    { value: false, mark: "1" },
+    { value: false, mark: "2" },
+    { value: false, mark: "3" },
+    { value: false, mark: "4" },
+    { value: false, mark: "5" },
+    { value: false, mark: "6" },
+    { value: false, mark: "7" },
+    { value: false, mark: "8" },
   ],
-  setResult: (indexBox: number) =>
+  setResults: (indexBox: number) =>
     set((state) => ({
       results: state.results.map((res, index) =>
         index == indexBox && !res.value
           ? { value: true, mark: state.turnNow }
           : indexBox == 99
-            ? { value: false, mark: "" }
+            ? { value: false, mark: String(index) }
             : res,
       ),
     })),
-  viewModalWin: [false, ""],
-  setViewModalWin: (show: boolean, winner: string) =>
-    set({ viewModalWin: [show, winner] }),
+  viewModalWin: {
+    view: false,
+    winner: "",
+    msg: "",
+    mode: "",
+  },
+  setViewModalWin: (modalWin: {
+    view: boolean;
+    winner: string;
+    msg: string;
+    mode: string;
+  }) => set({ viewModalWin: modalWin }),
   statesGame: {
     winsYou: 0,
     winsP1: 0,

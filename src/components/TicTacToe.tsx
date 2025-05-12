@@ -10,34 +10,51 @@ export default function TicTacToe({ mode }: Props) {
   const turnNow = useMarkStore((state) => state.turnNow);
   const setTurnNow = useMarkStore((state) => state.setTurnNow);
   const results = useMarkStore((state) => state.results);
-  const setResults = useMarkStore((state) => state.setResult);
+  const setResults = useMarkStore((state) => state.setResults);
   const markSelected = useMarkStore((state) => state.markSelected);
   const setStatesGame = useMarkStore((state) => state.setStatesGame);
+  const setViewModalWin = useMarkStore((state) => state.setViewModalWin);
 
   useEffect(() => {
-    if (logic(results) == "x") {
-      if(markSelected == "x"){
-        setStatesGame(mode == "cpu" ? "winsYou" : "winsP1")
-      } else{
-        setStatesGame(mode == "cpu" ? "winsCPU" : "winsP2")
+    const winner = logic(results);
+    if (winner == "x" || winner == "o") {
+      if (markSelected == winner) {
+        setStatesGame(mode == "cpu" ? "winsYou" : "winsP1");
+        setViewModalWin({
+          view: true,
+          winner: "x",
+          msg: mode == "cpu" ? "YOU WON!" : "PLAYER 1 WINS!",
+          mode: mode,
+        });
+      } else {
+        setStatesGame(mode == "cpu" ? "winsCPU" : "winsP2");
+        setViewModalWin({
+          view: true,
+          winner: "x",
+          msg: mode == "cpu" ? "OH NO, YOU LOST..." : "PLAYER 2 WINS!",
+          mode: mode,
+        });
       }
-    }
-    if (logic(results) == "o") {
-      if(markSelected == "o"){
-        setStatesGame(mode == "cpu" ? "winsYou" : "winsP1")
-      } else{
-        setStatesGame(mode == "cpu" ? "winsCPU" : "winsP2")
-      }
-    }
-    if (results.every((r) => r.value))
+    } else if (results.every((r) => r.value)) {
       setStatesGame(mode == "cpu" ? "tiesCPU" : "tiesVS");
+      setViewModalWin({
+        view: true,
+        winner: "ties",
+        msg: mode == "cpu" ? "RESTART GAME?" : "ROUND TIED",
+        mode: mode,
+      });
+    }
   }, [results]);
   return (
     <section className="grid h-full w-full grid-cols-3 grid-rows-3 gap-4 p-6">
       {results.map((res, index) => (
         <div
           onClick={() => {
-            if (!results.every((r) => r.value) && !results[index].value && logic(results) == "") {
+            if (
+              !results.every((r) => r.value) &&
+              !results[index].value &&
+              logic(results) == ""
+            ) {
               setResults(index);
               setTurnNow(turnNow == "x" ? "o" : "x");
             }

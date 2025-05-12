@@ -1,20 +1,24 @@
 export default function (table: { value: boolean; mark: string }[]) {
-  let winner = "";
-  if (table[0].mark == table[1].mark && table[2].mark == table[0].mark)
-    winner = table[0].mark;
-  if (table[3].mark == table[4].mark && table[5].mark == table[3].mark)
-    winner = table[3].mark;
-  if (table[6].mark == table[7].mark && table[8].mark == table[6].mark)
-    winner = table[6].mark;
-  if (table[0].mark == table[3].mark && table[6].mark == table[0].mark)
-    winner = table[0].mark;
-  if (table[1].mark == table[4].mark && table[7].mark == table[1].mark)
-    winner = table[1].mark;
-  if (table[2].mark == table[5].mark && table[8].mark == table[2].mark)
-    winner = table[2].mark;
-  if (table[0].mark == table[4].mark && table[8].mark == table[0].mark)
-    winner = table[0].mark;
-  if (table[2].mark == table[4].mark && table[6].mark == table[2].mark)
-    winner = table[2].mark;
-  return winner
+  const winPatterns = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  for (const [a, b, c] of winPatterns) {
+    if (
+      table[a].value &&
+      table[b].value &&
+      table[c].value &&
+      table[a].mark == table[b].mark &&
+      table[b].mark == table[c].mark
+    ) {
+      return table[a].mark;
+    }
+  }
+  return "";
 }
