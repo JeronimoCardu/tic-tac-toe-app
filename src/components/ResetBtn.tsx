@@ -1,9 +1,12 @@
 import { NavLink } from "react-router-dom";
+import useMarkStore from "../hooks/useMarkStore";
 
 export default function ResetBtn() {
+  const setResults = useMarkStore((state) => state.setResult);
   return (
     <NavLink
       to={"/"}
+      onClick={() => setResults(99)} // VALUE TO RESET GAME
       className="bg-silver hover:bg-silverHover flex h-[3em] w-[3em] cursor-pointer items-center justify-center rounded-[5px] shadow-[0px_.4rem_0px_#6B8997] transition-colors duration-200"
     >
       <svg

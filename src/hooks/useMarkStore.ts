@@ -7,7 +7,19 @@ type MarkProps = {
   setTurnNow: (turn: string) => void;
   results: { value: boolean; mark: string }[];
   setResult: (indexBox: number) => void;
-  resetResult: (reset: { value: false; mark: "" }[]) => void;
+  viewModalWin: [boolean, string];
+  setViewModalWin: (show: boolean, winner: string) => void;
+  statesGame: {
+    winsYou: number;
+    winsP1: number;
+    winsP2: number;
+    winsCPU: number;
+    tiesCPU: number;
+    tiesVS: number;
+  };
+  setStatesGame: (
+    prop: "winsYou" | "winsP1" | "winsP2" | "winsCPU" | "tiesCPU" | "tiesVS",
+  ) => void;
 };
 
 const useMarkStore = create<MarkProps>((set) => ({
@@ -31,10 +43,29 @@ const useMarkStore = create<MarkProps>((set) => ({
       results: state.results.map((res, index) =>
         index == indexBox && !res.value
           ? { value: true, mark: state.turnNow }
-          : res,
+          : indexBox == 99
+            ? { value: false, mark: "" }
+            : res,
       ),
     })),
-  resetResult: (reset: { value: false; mark: "" }[]) => set({ results: reset }),
+  viewModalWin: [false, ""],
+  setViewModalWin: (show: boolean, winner: string) =>
+    set({ viewModalWin: [show, winner] }),
+  statesGame: {
+    winsYou: 0,
+    winsP1: 0,
+    winsP2: 0,
+    winsCPU: 0,
+    tiesCPU: 0,
+    tiesVS: 0,
+  },
+  setStatesGame: (prop: keyof MarkProps["statesGame"]) =>
+    set((state) => ({
+      statesGame: {
+        ...state.statesGame,
+        [prop]: state.statesGame[prop] + 1,
+      },
+    })),
 }));
 
 export default useMarkStore;

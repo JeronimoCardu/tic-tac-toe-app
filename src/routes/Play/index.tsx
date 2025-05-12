@@ -1,11 +1,17 @@
 import Header from "../../components/Header";
+import States from "../../components/States";
 import TicTacToe from "../../components/TicTacToe";
 
-export default function Play() {
+type Props = {
+  mode: string;
+};
+
+export default function Play({ mode }: Props) {
   return (
     <div>
       <Header />
-      <TicTacToe />
+      <TicTacToe mode={mode} />
+      <States mode={mode} />
     </div>
   );
 }

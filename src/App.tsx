@@ -1,21 +1,8 @@
 import ButtonCPU from "./components/ButtonCPU";
 import ButtonPlayer from "./components/ButtonPlayer";
 import ChoiceMark from "./components/ChoiceMark";
-import useMarkStore from "./hooks/useMarkStore";
 
 export default function App() {
-  const resetResult = useMarkStore((state) => state.resetResult);
-  resetResult([
-    { value: false, mark: "" },
-    { value: false, mark: "" },
-    { value: false, mark: "" },
-    { value: false, mark: "" },
-    { value: false, mark: "" },
-    { value: false, mark: "" },
-    { value: false, mark: "" },
-    { value: false, mark: "" },
-    { value: false, mark: "" },
-  ]);
   return (
     <div className="flex h-screen flex-col justify-center p-6">
       <svg

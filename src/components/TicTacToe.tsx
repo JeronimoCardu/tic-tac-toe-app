@@ -1,17 +1,46 @@
+import { useEffect } from "react";
 import useMarkStore from "../hooks/useMarkStore";
+import logic from "../utils/logic";
 
-export default function TicTacToe() {
+type Props = {
+  mode: string;
+};
+
+export default function TicTacToe({ mode }: Props) {
   const turnNow = useMarkStore((state) => state.turnNow);
   const setTurnNow = useMarkStore((state) => state.setTurnNow);
   const results = useMarkStore((state) => state.results);
   const setResults = useMarkStore((state) => state.setResult);
+  const markSelected = useMarkStore((state) => state.markSelected);
+  const setStatesGame = useMarkStore((state) => state.setStatesGame);
+
+  useEffect(() => {
+    if (logic(results) == "x") {
+      if(markSelected == "x"){
+        setStatesGame(mode == "cpu" ? "winsYou" : "winsP1")
+      } else{
+        setStatesGame(mode == "cpu" ? "winsCPU" : "winsP2")
+      }
+    }
+    if (logic(results) == "o") {
+      if(markSelected == "o"){
+        setStatesGame(mode == "cpu" ? "winsYou" : "winsP1")
+      } else{
+        setStatesGame(mode == "cpu" ? "winsCPU" : "winsP2")
+      }
+    }
+    if (results.every((r) => r.value))
+      setStatesGame(mode == "cpu" ? "tiesCPU" : "tiesVS");
+  }, [results]);
   return (
     <section className="grid h-full w-full grid-cols-3 grid-rows-3 gap-4 p-6">
       {results.map((res, index) => (
         <div
           onClick={() => {
-            setResults(index);
-            return turnNow == "x" ? setTurnNow("o") : setTurnNow("x");
+            if (!results.every((r) => r.value) && !results[index].value && logic(results) == "") {
+              setResults(index);
+              setTurnNow(turnNow == "x" ? "o" : "x");
+            }
           }}
           key={index}
           className="ticTacToeBox relative"
