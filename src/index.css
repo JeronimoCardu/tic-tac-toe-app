@@ -33,8 +33,8 @@ body,
   --color-silver: #a8bfc9;
   --color-silverHover: #dbe8ed;
 
-  --breakpoint-tablet: 769px;
-  --breakpoint-desktop: 1441px;
+  --breakpoint-tablet: 376px;
+  --breakpoint-desktop: 769px;
 }
 
 @layer base {

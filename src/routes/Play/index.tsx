@@ -13,7 +13,9 @@ export default function Play({ mode }: Props) {
   return (
     <>
       {viewModalWin.view && <ModalWin />}
-      <div className={`${viewModalWin.view && "backdrop-brightness-50 brightness-50"} h-full relative`}>
+      <div
+        className={`${viewModalWin.view && "brightness-50 backdrop-brightness-50"} tablet:w-fit tablet:mx-auto tablet:scale-125 relative flex h-screen flex-col justify-center`}
+      >
         <Header />
         <TicTacToe mode={mode} />
         <States mode={mode} />

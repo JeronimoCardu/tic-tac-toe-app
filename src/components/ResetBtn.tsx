@@ -15,7 +15,7 @@ export default function ResetBtn() {
           setTurnNow("x");
         }
       }} // VALUE TO RESET GAME
-      className={`${viewModalWin.view ? " cursor-default" : "cursor-pointer hover:bg-silverHover"} bg-silver  flex h-[3em] w-[3em] items-center justify-center rounded-[5px] shadow-[0px_.4rem_0px_#6B8997] transition-colors duration-200`}
+      className={`${viewModalWin.view ? "cursor-default" : "hover:bg-silverHover cursor-pointer"} bg-silver flex h-[3em] w-[3em] items-center justify-center rounded-[5px] shadow-[0px_.4rem_0px_#6B8997] transition-colors duration-200`}
     >
       <svg
         className="scale-125"

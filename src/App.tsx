@@ -4,7 +4,7 @@ import ChoiceMark from "./components/ChoiceMark";
 
 export default function App() {
   return (
-    <div className="flex h-screen flex-col justify-center p-6">
+    <div className="tablet:w-[70%] desktop:w-[35%] mx-auto flex h-screen flex-col justify-center p-6">
       <svg
         className="self-center"
         width="72"

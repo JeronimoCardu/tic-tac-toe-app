@@ -13,7 +13,7 @@ export default function BtnSecond1() {
         setTurnNow("x");
       }}
       to={"/"}
-      className="bg-orange headingXS rounded-[10px] p-4 shadow-[0px_.5em_0px_#CC8B13]"
+      className="bg-orange headingXS hover:bg-orangeHover rounded-[10px] p-4 shadow-[0px_.5em_0px_#CC8B13]"
     >
       NEXT ROUND
     </NavLink>
