@@ -9,14 +9,15 @@ type Props = {
 };
 
 export default function Play({ mode }: Props) {
-  
   const viewModalWin = useMarkStore((state) => state.viewModalWin);
   return (
-    <div className="relative">
+    <>
       {viewModalWin.view && <ModalWin />}
-      <Header />
-      <TicTacToe mode={mode} />
-      <States mode={mode} />
-    </div>
+      <div className={`${viewModalWin.view && "backdrop-brightness-50 brightness-50"} h-full relative`}>
+        <Header />
+        <TicTacToe mode={mode} />
+        <States mode={mode} />
+      </div>
+    </>
   );
 }

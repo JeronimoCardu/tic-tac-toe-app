@@ -22,7 +22,7 @@ export default function TicTacToe({ mode }: Props) {
         setStatesGame(mode == "cpu" ? "winsYou" : "winsP1");
         setViewModalWin({
           view: true,
-          winner: "x",
+          winner: winner,
           msg: mode == "cpu" ? "YOU WON!" : "PLAYER 1 WINS!",
           mode: mode,
         });
@@ -30,7 +30,7 @@ export default function TicTacToe({ mode }: Props) {
         setStatesGame(mode == "cpu" ? "winsCPU" : "winsP2");
         setViewModalWin({
           view: true,
-          winner: "x",
+          winner: winner,
           msg: mode == "cpu" ? "OH NO, YOU LOST..." : "PLAYER 2 WINS!",
           mode: mode,
         });
@@ -46,7 +46,7 @@ export default function TicTacToe({ mode }: Props) {
     }
   }, [results]);
   return (
-    <section className="grid h-full w-full grid-cols-3 grid-rows-3 gap-4 p-6">
+    <section className="grid w-full grid-cols-3 grid-rows-3 gap-4 p-6">
       {results.map((res, index) => (
         <div
           onClick={() => {

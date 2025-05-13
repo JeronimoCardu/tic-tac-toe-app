@@ -5,7 +5,7 @@ import BtnSecond2 from "./BtnSecond2";
 export default function ModalWin() {
   const viewModalWin = useMarkStore((state) => state.viewModalWin);
   return (
-    <div className="bg-semiDark absolute top-1/2 -translate-y-1/4 left-1/2 z-20 flex w-full -translate-x-1/2 flex-col items-center justify-center gap-2 py-10">
+    <div className="bg-semiDark absolute top-1/2 left-1/2 z-20 flex w-full -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-2 py-10">
       <p
         className={`${viewModalWin.winner == "ties" && "hidden"} text-silver headingXS`}
       >
