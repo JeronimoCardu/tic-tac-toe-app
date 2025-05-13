@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import useMarkStore from "../hooks/useMarkStore";
 import logic from "../utils/logic";
+import cpuLogic from "../utils/cpuLogic";
 
 type Props = {
   mode: string;
@@ -13,38 +14,67 @@ export default function TicTacToe({ mode }: Props) {
   const setResults = useMarkStore((state) => state.setResults);
   const markSelected = useMarkStore((state) => state.markSelected);
   const setStatesGame = useMarkStore((state) => state.setStatesGame);
+  const viewModalWin = useMarkStore((state) => state.viewModalWin);
   const setViewModalWin = useMarkStore((state) => state.setViewModalWin);
 
-  useEffect(() => {
+  const checkWin = () => {
     const winner = logic(results);
-    if (winner == "x" || winner == "o") {
-      if (markSelected == winner) {
-        setStatesGame(mode == "cpu" ? "winsYou" : "winsP1");
+
+    if (!viewModalWin.view) {
+      if (winner == "x" || winner == "o") {
+        if (markSelected == winner) {
+          setStatesGame(mode == "cpu" ? "winsYou" : "winsP1");
+          setViewModalWin({
+            view: true,
+            winner: winner,
+            msg: mode == "cpu" ? "YOU WON!" : "PLAYER 1 WINS!",
+            mode: mode,
+          });
+          console.log("DSADASDASDASD");
+          return true;
+        } else {
+          setStatesGame(mode == "cpu" ? "winsCPU" : "winsP2");
+          setViewModalWin({
+            view: true,
+            winner: winner,
+            msg: mode == "cpu" ? "OH NO, YOU LOST..." : "PLAYER 2 WINS!",
+            mode: mode,
+          });
+          return true;
+        }
+      } else if (results.every((r) => r.value)) {
+        setStatesGame(mode == "cpu" ? "tiesCPU" : "tiesVS");
         setViewModalWin({
           view: true,
-          winner: winner,
-          msg: mode == "cpu" ? "YOU WON!" : "PLAYER 1 WINS!",
+          winner: "ties",
+          msg: mode == "cpu" ? "RESTART GAME?" : "ROUND TIED",
           mode: mode,
         });
-      } else {
-        setStatesGame(mode == "cpu" ? "winsCPU" : "winsP2");
-        setViewModalWin({
-          view: true,
-          winner: winner,
-          msg: mode == "cpu" ? "OH NO, YOU LOST..." : "PLAYER 2 WINS!",
-          mode: mode,
-        });
+        return true;
       }
-    } else if (results.every((r) => r.value)) {
-      setStatesGame(mode == "cpu" ? "tiesCPU" : "tiesVS");
-      setViewModalWin({
-        view: true,
-        winner: "ties",
-        msg: mode == "cpu" ? "RESTART GAME?" : "ROUND TIED",
-        mode: mode,
-      });
     }
+    return false;
+  };
+
+  const playCPU = (index?: number) => {
+    const randomPos = cpuLogic(results, markSelected == "x" ? "o" : "x", index);
+    setResults(randomPos);
+    setTurnNow(markSelected);
+  };
+
+  useEffect(() => {
+    // LA CPU TOMA EL MEDIO SI EMPIEZA PRIMERO
+    setTurnNow("x");
+    if (mode === "cpu" && markSelected === "o") {
+      playCPU();
+    }
+  }, []);
+
+  useEffect(() => {
+    // CHEQUEA EL GANADOR
+    checkWin();
   }, [results]);
+
   return (
     <section className="grid w-full grid-cols-3 grid-rows-3 gap-4 p-6">
       {results.map((res, index) => (
@@ -56,15 +86,21 @@ export default function TicTacToe({ mode }: Props) {
               logic(results) == ""
             ) {
               setResults(index);
-              setTurnNow(turnNow == "x" ? "o" : "x");
+              checkWin();
+              if (mode == "cpu") {
+                setTurnNow(turnNow == "x" ? "o" : "x");
+                setTimeout(() => {
+                  playCPU(index);
+                }, 200);
+              }
             }
           }}
           key={index}
-          className="ticTacToeBox relative"
+          className={`${viewModalWin.view ? "cursor-default" : "cursor-pointer"} ticTacToeBox relative`}
         >
           {res.value && res.mark == "x" ? (
             <svg
-              className="fill-lightBlue absolute right-1/2 translate-x-1/2 cursor-pointer hover:fill-none"
+              className={`${viewModalWin.view ? "fill-lightBlue" : "fill-lightBlue hover:fill-none"} absolute right-1/2 translate-x-1/2`}
               width="64"
               height="64"
               xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +113,7 @@ export default function TicTacToe({ mode }: Props) {
             </svg>
           ) : res.value && res.mark == "o" ? (
             <svg
-              className="fill-orange absolute right-1/2 translate-x-1/2 cursor-pointer hover:fill-none"
+              className={`${viewModalWin.view ? "fill-orange" : "fill-orange hover:fill-none"} absolute right-1/2 translate-x-1/2`}
               width="66"
               height="66"
               xmlns="http://www.w3.org/2000/svg"
